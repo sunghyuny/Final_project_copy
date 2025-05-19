@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+{% include 'Navbar.html'%}
+{% load humanize %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        
+        .lodg_res_page{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lodg_res_content{
+            width: 1000px;
+        }
+
+        .page_title{
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .title{
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .content_title{
+            font-size: 24px;    
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .table, .product_table, .res_table, .guest_table {
+            font-size: 16px;
+            width: 100%;
+            border: 1px solid grey;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            height: 40px;
+            border: 1px solid grey;
+            padding-left: 20px;
+        }
+
+        .room_name, .gender{
+            margin: 0;
+            padding: 0;
+            width: 150px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .eng_name{
+            text-align: center;
+        }
+
+        th{
+            height: 40px;
+            width: 150px;
+            border: 1px solid grey;
+            font-size: 21px;
+            background-color: #D9D9D9;
+            text-align: left;
+            padding-left: 30px;
+        }
+
+        td{
+            height: 40px;
+            width: 500px; 
+            border: 1px solid grey;
+            padding-left: 20px;
+            font-size: 21px;
+        }
+
+        .product, .reservation{
+            margin-bottom: 50px;
+        }
+
+        .price{
+            color: red;
+            font-weight: bold;
+            font-size: 22px;
+            margin-left: 100px;
+        }
+
+        .input_email{
+            width: 300px;
+            height: 20px;
+            font-size: 21px;
+        }
+
+        .input_require{
+            width: 300px;
+            height: 100px;
+            font-size: 21px;
+        }
+
+        .traveler_add{
+            border: none;
+            float: right;
+            background-color: #2295ff;
+            text-align: center;
+            color: white;
+            width: 120px;
+            height: 30px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .traveler_info_in{
+            border: 1px solid gray;
+            background-color: #D9D9D9;
+            display: flex;
+            font-size: 20px;
+            margin-bottom: 50px;
+        }
+
+        .dropdown_menu{
+            background-color: white;
+            border: 1px solid black;
+            width: 60px;
+            text-align: center;
+            font-size: 19px;
+            margin: 5px;
+        }
+
+        .input_text{
+            width: 250px;
+            height: 20px;
+            font-size: 18px;
+        }
+
+        .price_content{
+            border: 1px solid black;
+            display: flex;
+            font-size: 20px;
+            height: 150px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .btn{
+            display: flex;
+            justify-content: center;
+        }
+
+        .res_btn, .cancel_btn{
+            background-color: #2295ff;
+            color: white;
+            border: none;
+            width: 180px;
+            height: 40px;
+            font-size: 22px;
+            margin: 50px 10px 0px 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="lodg_res_page">
+        <div class="lodg_res_content">
+            <div class="page_title">
+                <p class="title">패키지 예약하기</p>
+                <p class="caution">예약자 정보를 정확히 입력해주시고, 약관 및 주의사항 확인해주시기 바랍니다.</p>
+            </div>
+
+            <div class="page_content">
+                <form id="reservation-form" action="{% url 'submit_reservation' package_id=package.id %}" method="POST">
+                    {% csrf_token %}
+                    <div class="product">
+                        <p class="content_title">상품 정보</p>
+                        <table class="product_table">
+                            <tr>
+                                <th>상품명</th>
+                                <td>{{ package.destination }}</td>
+                            </tr>
+                            <tr>
+                                <th>상품 코드</th>
+                                <td>Jeju123-1234</td>
+                            </tr>
+                            <tr>
+                                <th>여행 기간</th>
+                                <td><p>가는날 {{ package.start_date }}</p><p>오는날 {{ package.end_date }}</p></td>
+                            </tr>
+                            <tr>
+                                <th>상품 가격</th>
+                                <td>{{ total_price|floatformat:"-0"|intcomma }}원</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="reservation">
+                        <p class="content_title">예약자 정보</p>
+                        <table class="res_table">
+                            <tr>
+                                <th>이름</th>
+                                <td><input type="text" name="username" value="{{ user.username }}" required></td>
+                            </tr>
+                            <tr>
+                                <th>생년월일/성별</th>
+                                <td>{{ user.age }}</td>
+                            </tr>
+                            <tr>
+                                <th>전화번호</th>
+                                <td><input type="tel" name="user_phone" value="{{ user.phone_number }}" required></td>
+                            </tr>
+                            <tr>
+                                <th>이메일</th>
+                                <td><input type="email" class="input_email" value="{{ user.email }}"></td>
+                            </tr>
+                            <tr>
+                                <th>요청사항</th>
+                                <td><input type="text" class="input_require" placeholder="요청사항을 적어주세요"></td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="traveler_info">
+                        <p class="content_title">여행자 정보</p>
+                        <button type="button" class="traveler_add">여행자 추가</button><br><br>
+                        <div class="traveler_info_in" id="copy0" data-type="adult">
+                            <div class="dropdown_menu">
+                                <select class="travelerType" onchange="updateTravelerType(this)">
+                                    <option value="adult" selected>성인</option>
+                                    <option value="student">청소년</option>
+                                    <option value="child">아동</option>
+                                </select>
+                            </div>
+                            <p>이름: <input type="text" class="input_text" name="traveler_name0" value="{{ user.username }}"></p>
+                            <p>전화번호: <input type="tel" name="traveler_phone0" class="phone" value="{{ user.phone_number }}"></p>
+                            <button type="button" class="icon" onclick="removeTraveler(this)">삭제</button>
+                        </div>
+                    </div>
+
+                    <div class="payment">
+                        <p class="content_title">총 결제 예상금액</p>
+                        <div class="price_content">
+                            <div class="traceler_cnt">
+                                <p id="adultPrice">성인 : {{ package.adult_price|floatformat:"-0"|intcomma }}원 X <span id="adultCount">0</span>명</p>
+                                <p id="studentPrice">청소년 : {{ package.youth_price|floatformat:"-0"|intcomma }}원 X <span id="studentCount">0</span>명</p>
+                                <p id="childPrice">아동 : {{ package.child_price|floatformat:"-0"|intcomma }}원 X <span id="childCount">0</span>명</p>
+                            </div>
+                            <p class="price">총 가격 : <span id="totalPrice">0</span></p>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="input_adult" name="adult" value="0">
+                    <input type="hidden" id="input_student" name="student" value="0">
+                    <input type="hidden" id="input_child" name="child" value="0">
+                    <input type="hidden" id="input_total_price" name="total_price" value="0">
+                    <input type="hidden" id="copyNum" name="copyNum" value="1">
+
+                    <div class="btn">
+                        <button type="submit" class="res_btn">예약하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let copyNum = 1;
+        const prices = {
+            adult: {{ package.adult_price|floatformat:"-0" }},
+            student: {{ package.youth_price|floatformat:"-0" }},
+            child: {{ package.child_price|floatformat:"-0" }} // ... existing code ...
+        }; // 추가된 세미콜론
+
+        function updateTotalPrice() {
+            const adultCount = parseInt(document.getElementById("adultCount").textContent);
+            const studentCount = parseInt(document.getElementById("studentCount").textContent);
+            const childCount = parseInt(document.getElementById("childCount").textContent);
+
+            const totalPrice = (prices.adult * adultCount) + (prices.student * studentCount) + (prices.child * childCount);
+            document.getElementById("totalPrice").textContent = totalPrice.toLocaleString() + "원";
+            document.getElementById("input_total_price").value = totalPrice;
+        }
+
+        function updateTravelerType(selectElement) {
+            const type = selectElement.value;
+            const parentElement = selectElement.closest('.traveler_info_in');
+            parentElement.setAttribute('data-type', type);
+
+            updateCount();
+            updateTotalPrice();
+        }
+
+        function addTraveler(type = 'adult') {
+            const travelerContainer = document.querySelector('.traveler_info');
+            const template = document.getElementById('copy0').cloneNode(true);
+            const newId = 'copy' + copyNum++;
+            template.id = newId;
+
+            const radios = template.querySelectorAll('input[type="radio"]');
+            radios.forEach(radio => {
+                radio.name = `gender${copyNum}`;
+            });
+
+            template.querySelector('.travelerType').value = type;
+            template.setAttribute('data-type', type);
+            travelerContainer.appendChild(template);
+
+            document.getElementById('copyNum').value = copyNum; // copyNum 값을 업데이트
+
+            updateCount();
+            updateTotalPrice();
+        }
+
+        function removeTraveler(buttonElement) {
+            const parentElement = buttonElement.closest('.traveler_info_in');
+            parentElement.parentNode.removeChild(parentElement);
+
+            updateCount();
+            updateTotalPrice();
+        }
+
+        function updateCount() {
+            let adultCount = 0;
+            let studentCount = 0;
+            let childCount = 0;
+
+            document.querySelectorAll('.traveler_info_in').forEach(traveler => {
+                const type = traveler.getAttribute('data-type');
+                if (type === 'adult') adultCount++;
+                if (type === 'student') studentCount++;
+                if (type === 'child') childCount++;
+            });
+
+            document.getElementById('adultCount').textContent = adultCount;
+            document.getElementById('studentCount').textContent = studentCount;
+            document.getElementById('childCount').textContent = childCount;
+
+            document.getElementById('input_adult').value = adultCount;
+            document.getElementById('input_student').value = studentCount;
+            document.getElementById('input_child').value = childCount;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 기본적으로 성인 1명 추가
+            updateCount();
+            updateTotalPrice();
+        });
+
+        document.querySelectorAll('.dropdown_item').forEach(item => {
+            item.addEventListener('click', function() {
+                addTraveler(this.getAttribute('data-type'));
+            });
+        });
+
+        document.querySelector('.traveler_add').addEventListener('click', function() {
+            addTraveler('adult');
+        });
+    </script>
+
+    <script>
+        document.getElementById('reservation-form').addEventListener('submit', function(event) {
+            // event.preventDefault(); // 이 줄을 주석 처리하여 폼이 실제로 제출되도록 합니다.
+            alert('예약이 성공적으로 완료되었습니다.');
+            window.location.href = '{% url "mainpage" %}'; // 메인 페이지로 리디렉트
+        });
+    </script>
+
+</body>
+</html>

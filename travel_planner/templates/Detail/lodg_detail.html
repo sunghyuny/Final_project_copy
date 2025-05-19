@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+{% include 'Navbar.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>숙소 상세</title>
+    <style>
+        html {
+            overflow-x: hidden;
+        }
+
+        .lodg_detail_page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 1550px;
+            overflow-x: hidden;
+            margin: 0 auto;
+        }
+
+        .lodg_detail_content{
+            width: 1360px;
+            margin-left: 100px;
+        }
+
+        .title_name{
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .info_name{
+            font-size: 21px;
+            font-weight: bold;
+            margin-left: 1rem;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .lodg_img {
+            flex-wrap: wrap;
+            justify-content: flex-start;
+        }
+
+        .main_img{
+            width: 578px;
+            height: 350px;
+            margin-bottom: 10px;
+            margin-right: 10px;
+            display: flex;
+            float: left;
+        }
+
+        .sub_img{
+            width: 300px;
+            height: 170px;
+            margin-bottom: 10px;
+            margin-right: 7px;
+        }
+        .content_nav{
+            border: 1px solid;
+            width: 1200px;
+            overflow-x: visible;
+            padding-top: 10px;
+        }
+
+        .content_nav>ul{
+            display: inline-block;
+            margin-left: 2rem;
+        }
+        .content_nav>ul>li{
+            list-style: none;
+            display: inline-block;
+            margin-right: 5.5rem;
+            font-size: 16px;
+        }
+
+        .start_price{
+            display: inline-block;
+            color: #858585;
+            margin-right: 1rem;
+            margin-left: 5rem;
+            margin-bottom: 20px;
+        }
+
+        .lodg_price{
+            display: inline-block;
+            font-size: 21px;
+            font-weight: bold;
+            color: #FF0000;
+            margin-right: 30px;
+        }
+
+        .look_btn{
+            background-color: #2295ff;
+            color: white;
+            border-radius: 30px;
+            border: none;
+            font-size: 16px;
+            height: 40px;
+            width: 150px;
+            display: inline-block;
+        }
+
+        .lodg_info{
+            border: 1px solid;
+            margin-top: 10px;
+            width: 760px;
+            padding: 10px;
+        }
+
+        .lodg_service{
+            border: 1px solid;
+            margin-top: 10px;
+            width: 760px;
+            padding: 10px;
+            height: 175px;
+            overflow-y: hidden;
+        }
+
+        .lodg_service>ul{
+            margin-left: 1rem;
+        }
+
+        .lodg_service>ul>li{
+            list-style: none;
+            display: inline-block;
+            margin-right: 3rem;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .lodg_review{
+            border: 1px solid;
+            display: flex;
+            float: right;
+            width: 390px;
+            height: 356px;
+            margin-top: 10px;
+            margin-right: 158px;
+            padding: 10px;
+        }
+
+        .lodg_address {
+            margin-left: 16px;
+            color: #8F8F8F;
+        }
+
+        .lodg_explanation {
+            margin-left: 16px;
+        }
+
+        .review_point{
+            margin: 20px;
+        }
+
+        /* .review_point>p{
+            margin-bottom: 20px;
+        } */
+
+        .total{
+            font-size: 21px;
+            font-weight: bold;
+            margin: 0;
+            margin-top: 12px;
+        }
+
+        .review_cont{
+            color: #2295ff;
+            font-size: 16px;
+            margin: 0;
+            margin-top: 12px;
+        }
+
+        .sub_detail{
+            display: inline-block;
+            font-size: 16px;
+            margin-right: 20px;
+        }
+
+        .review_text{
+            margin-right: 20px;
+            margin-top: 20px;
+        }
+
+        .review_text>p{
+            border: 1px solid;
+            border-radius: 20px;
+            padding: 9px;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+
+        .select_category{
+            border: 1px solid;
+            width: 1200px;
+        }
+
+        .select_return{
+            display: inline-block;
+            margin-left: 10rem;
+            font-size: 21px;
+            text-decoration: underline;
+            color: #2295ff;
+            margin-top: 30px;
+        }
+
+        .category{
+            display: inline-block;
+            border: 1px solid;
+            border-radius: 35px;
+            padding: 10px 20px;
+            margin-left: 5rem;
+            margin-right: 2rem;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        .room_list{
+            border: 1px solid;
+            margin-top: 3rem;
+            width: 1200px;
+        }
+
+        .room_info{
+            background-color: #D9D9D9;
+            /* height: 25rem;
+            overflow-y: hidden; */
+        }
+
+        .room_name{
+            font-size: 24px;
+            margin-left: 2rem;
+            font-weight: bolder;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        .room_info_list{
+            margin-left: -2rem;
+            height: 30px;
+        }
+
+        .room_info_list>li{
+            list-style: none;
+            display: inline-block;
+            margin-left: 130px;
+        }
+
+        .room_img{
+            display: inline-block;
+            margin-left: 8px;
+        }
+
+        .room_explanation{
+            background-color: white;
+            margin-top: 0;
+            float: right;
+            height: 290px;
+            width: 900px;
+        }
+
+        .room_explanation>div{
+            display: inline-block;
+            /* margin-right: 3rem; */
+            margin-left: 20px;
+        }
+
+        .room_main{
+            width:17.5rem;
+            height: 10rem;
+
+        }
+
+        .room_sub{
+            width: 8.5rem;
+        }
+
+        .reserveBtn{
+            background-color: #2295ff;
+            color: white;
+            border-radius: 30px;
+            border: none;
+            font-size: 16px;
+            height: 40px;
+            width: 150px;
+            display: inline-block;
+        }
+
+        li{
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="lodg_detail_page">
+        <div class="lodg_detail_content">
+            <p class="title_name">{{ hotel.name }}</p>
+            <div class="lodg_img">
+                <img src="{{ hotel.photo.url }}" alt="" class="main_img"></img>
+                <img src="{% static 'image/4ed4a279ba3b0041fad714c38bca36d0.webp' %}" alt="" class="sub_img"></img>
+                <img src="{% static 'image/224955405.jpg' %}" alt="" class="sub_img"></img>
+                <img src="{% static 'image/ea0fea6799cc8d466be90663eb5b267e.webp' %}" alt="" class="sub_img"></img>
+                <img src="{% static 'image/340282403.jpg' %}" alt="" class="sub_img"></img>
+            </div>
+
+            <div class="content_nav">
+                <ul>
+                    <li>개요</li>
+                    <li>편의시설/서비스</li>
+                    <li>이용 후기</li>
+                    <li>정책</li>
+                </ul>
+                <p class="start_price">시작가</p>
+                <p class="lodg_price">110,450원</p>
+                <button class="look_btn" onclick="openReservePopup({{ hotel.id }})">예약하기</button> <!-- 예약하기 버튼 수정 -->
+            </div>
+
+            <div class="lodg_review">
+                <div class="review_point">
+                    <p class="total">8.0우수</p>
+                    <p class="review_cont">후기 1572개</p>
+                    <p class="sub_detail">청결 상태 8.2</p>
+                    <p class="sub_detail">서비스 8.5</p>
+                    <p class="sub_detail">부대시설 8.1</p>
+                    <p class="sub_detail">위치 7.5</p>
+                </div>
+                <div class="review_text">
+                    <p>저렴한 가격에 만족스러운 숙소입니다</p>
+                    <p>강릉 앞바다를 보면서 잘 쉬다 갑니다.</p>
+                    <p>가격대비 좋은 시설과 서비스가 최고 입니다.</p>
+                </div>
+            </div>
+
+            <div class="lodg_info">
+                <div class="info_text">
+                    <p class="info_name">제주호텔</p>
+                    <p class="lodg_address">제주특별자치도 서귀포시 중문관광로72번길 35</p>
+                    <p class="lodg_explanation">제주 중문관광단지에 자리한 롯데호텔 제주는 총 500개의 객실을 갖춘 리조트호텔입니다. 제주국제공항에서 차로 약 80분 거리에 있으며 무료 리무진 서비스를 운영하고 있습니다. 또한, 천제연 폭포, 여미지식물원 등이 도보로 10분, 중문색달해수욕장, 갯깍주상절리대 등이 도보로 약 20분 내외의 가까운 거리에 있습니다</p>
+                </div>
+                
+            </div>
+
+            <div class="lodg_service">
+                <p class="info_name">편의시설/서비스</p>
+                <ul>
+                    <li>√24시간 프론트 데스크</li>
+                    <li>√주차장</li>
+                    <li>√셔틀 버스</li>
+                    <li>√무료 Wi-Fi(모든객실)</li>
+                    <li>√피트니스 센터</li>
+                    <li>√실내 수영장</li>
+                    <li>√익스프레스 체크인/체크아웃</li>
+                    <li>√여행 가방 보관 서비스</li>
+                </ul>
+            </div>
+
+            
+
+            <div class="select_room">
+                <p class="title_name">객실을 선택하세요</p>
+                <div class="select_category">
+                    <p class="category">금연</p>
+                    <p class="category">오션뷰</p>
+                    <p class="category">조식</p>
+                    <p class="category">퀸배드</p>
+                    <p class="select_return">전체 선택 해제</p>
+                </div>
+            </div>
+
+            <div class="room_list" id="roomList">
+                <p class="room_name">한국식 온돌룸-전망 없음</p>
+                <div class="room_info">
+                    <ul class="room_info_list">
+                        <li class="img_area">객실/투숙 공간</li>
+                        <li>상품 안내</li>
+                        <li>최대 인원</li>
+                        <li>상세 정보</li>
+                        <li>요금 | 1박기준</li>
+                    </ul>
+                    
+                    <div class="room_explanation">
+                        <div>
+                            <ul>
+                                <li>주차, 무료 Wi-Fi, 피트니스 센터</li>
+                                <li>조식 포함</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p>성인 2명</p>
+                            <p>아동 1명(3세미만) 무료 투숙 가능</p>
+                        </div>
+                        <div>
+                            <ul>
+                                <li>금연</li>
+                                <li>객실크기 : 44㎡(13평)</li>
+                                <li>전망 : 없음</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="lodg_price">110,450원</p>
+                            <p>1박당 요금 시작가</p>
+                            <button class="reserveBtn" onclick="openReservePopup({{ hotel.id }})">예약하기</button> <!-- 예약하기 버튼 수정 -->
+                        </div>
+                    </div>
+
+                    <div class="room_img">
+                        <img src="{% static 'image/340282403.jpg' %}" alt="" class="room_main"></img><br></br>
+                        <img src="{% static 'image/340282399.jpg' %}" alt="" class="room_sub"></img>
+                        <img src="{% static 'image/335670071.jpg' %}" alt="" class="room_sub"></img>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room_list" id="roomList">
+                <p class="room_name">이그제큐티브 스위트</p>
+                <div class="room_info">
+                    <ul class="room_info_list">
+                        <li class="img_area">객실/투숙 공간</li>
+                        <li>상품 안내</li>
+                        <li>최대 인원</li>
+                        <li>상세 정보</li>
+                        <li>요금 | 1박기준</li>
+                    </ul>
+                    
+                    <div class="room_explanation">
+                        <div>
+                            <ul>
+                                <li>주차, 무료 Wi-Fi, 피트니스 센터</li>
+                                <li>조식 포함</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p>성인 2명</p>
+                            <p>아동 1명(3세미만) 무료 투숙 가능</p>
+                        </div>
+                        <div>
+                            <ul>
+                                <li>금연</li>
+                                <li>조식</li>
+                                <li>객실크기 : 84㎡(25평)</li>
+                                <li>전망 : 오션뷰</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="lodg_price">239,700원</p>
+                            <p>1박당 요금 시작가</p>
+                            <button class="reserveBtn" onclick="openReservePopup({{ hotel.id }})">예약하기</button> <!-- 예약하기 버튼 수정 -->
+                        </div>
+                    </div>
+
+                    <div class="room_img">
+                        <img src="{% static 'image/af9188c91a998e757784a87f8754080d.webp' %}" alt="" class="room_main"></img><br></br>
+                        <img src="{% static 'image/8a4e97cffbb78bce9ea88aade18fb790.webp' %}" alt="" class="room_sub"></img>
+                        <img src="{% static 'image/6b62ec3b444f2bb8715239afa0a0c350.webp' %}" alt="" class="room_sub"></img>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room_list" id="roomList">
+                <p class="room_name">한국식 온돌룸-전망 없음</p>
+                <div class="room_info">
+                    <ul class="room_info_list">
+                        <li class="img_area">객실/투숙 공간</li>
+                        <li>상품 안내</li>
+                        <li>최대 인원</li>
+                        <li>상세 정보</li>
+                        <li>요금 | 1박기준</li>
+                    </ul>
+                    
+                    <div class="room_explanation">
+                        <div>
+                            <ul>
+                                <li>주차, 무료 Wi-Fi, 피트니스 센터</li>
+                                <li>조식 포함</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p>성인 2명</p>
+                            <p>아동 1명(3세미만) 무료 투숙 가능</p>
+                        </div>
+                        <div>
+                            <ul>
+                                <li>금연</li>
+                                <li>객실크기 : 44㎡(13평)</li>
+                                <li>전망 : 없음</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="lodg_price">110,450원</p>
+                            <p>1박당 요금 시작가</p>
+                            <button class="reserveBtn" onclick="openReservePopup({{ hotel.id }})">예약하기</button> <!-- 예약하기 버튼 수정 -->
+                        </div>
+                    </div>
+
+                    <div class="room_img">
+                        <img src="{% static 'image/340282403.jpg' %}" alt="" class="room_main"></img><br></br>
+                        <img src="{% static 'image/340282399.jpg' %}" alt="" class="room_sub"></img>
+                        <img src="{% static 'image/335670071.jpg' %}" alt="" class="room_sub"></img>
+                    </div>
+                </div>
+            </div>
+
+            <div class="room_list" id="roomList">
+                <p class="room_name">이그제큐티브 스위트</p>
+                <div class="room_info">
+                    <ul class="room_info_list">
+                        <li class="img_area">객실/투숙 공간</li>
+                        <li>상품 안내</li>
+                        <li>최대 인원</li>
+                        <li>상세 정보</li>
+                        <li>요금 | 1박기준</li>
+                    </ul>
+                    
+                    <div class="room_explanation">
+                        <div>
+                            <ul>
+                                <li>주차, 무료 Wi-Fi, 피트니스 센터</li>
+                                <li>조식 포함</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p>성인 2명</p>
+                            <p>아동 1명(3세미만) 무료 투숙 가능</p>
+                        </div>
+                        <div>
+                            <ul>
+                                <li>금연</li>
+                                <li>조식</li>
+                                <li>객실크기 : 84㎡(25평)</li>
+                                <li>전망 : 오션뷰</li>
+                            </ul>
+                        </div>
+                        <div>
+                            <p class="lodg_price">239,700원</p>
+                            <p>1박당 요금 시작가</p>
+                            <button class="reserveBtn" onclick="openReservePopup({{ hotel.id }})">예약하기</button> <!-- 예약하기 버튼 수정 -->
+                        </div>
+                    </div>
+
+                    <div class="room_img">
+                        <img src="{% static 'image/af9188c91a998e757784a87f8754080d.webp' %}" alt="" class="room_main"></img><br></br>
+                        <img src="{% static 'image/8a4e97cffbb78bce9ea88aade18fb790.webp' %}" alt="" class="room_sub"></img>
+                        <img src="{% static 'image/6b62ec3b444f2bb8715239afa0a0c350.webp' %}" alt="" class="room_sub"></img>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openReservePopup(hotelId) {
+            const url = "{% url 'hotel:reserve' accommodation_id=0 %}".replace('0', hotelId);
+            window.open(url, 'reservePopup', 'width=800,height=600,scrollbars=yes');
+        }
+
+        document.getElementById("lookBtn").addEventListener("click", function() {
+            document.getElementById("roomList").scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+
+    <script>
+        function openReservePopup(hotelId) {
+            const url = "{% url 'hotel:reserve' accommodation_id=0 %}".replace('0', hotelId);
+            window.open(url, 'reservePopup', 'width=800,height=600,scrollbars=yes');
+        }
+
+        document.getElementById("lookBtn").addEventListener("click", function() {
+            document.getElementById("roomList").scrollIntoView({ behavior: 'smooth' });
+        });
+    </script>
+</body>

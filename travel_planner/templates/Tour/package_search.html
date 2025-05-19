@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+{% include 'Navbar.html'%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제주도 검색 결과 | Travel Plan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+
+        .sights_page{
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .pachage_content{
+            align-items: center;
+            justify-content: center;
+            width: 1193px;
+            overflow-x: hidden;
+            margin: 0 auto;
+            overflow-x: hidden;
+        }
+
+        .top_img{
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: flex-start;
+        }
+
+        .top_image {
+            position: relative;
+            width: 1920px;
+            height: 723px;
+        }
+
+        .search_container {
+            margin: 0 auto;
+            overflow-x: hidden;
+            width: 1193px;
+            position: absolute;
+            align-items: center;
+            padding-left: 100px;
+            padding-bottom: 30px;
+        }
+
+        .searchtext {
+            height: 42px;
+            width: 310px;
+            margin-right: 10px;
+            padding-left: 15px;
+            box-shadow: 2px 2px 2px #d7d7db;
+            border: none;
+        }
+
+        .searchtext2 {
+            height: 42px;
+            width: 310px;
+            margin-right: 10px;
+            padding-left: 15px;
+            box-shadow: 2px 2px 2px #d7d7db;
+            border: none;
+        }
+
+        .search_btn {
+            width: 113px;
+            height: 46px;
+            background-color: #909090;
+            color: white;
+            font-size: 16px;
+            border: none;
+            margin-left: 200px;
+        }
+
+        .sights_list {
+            align-items: center;
+            padding-left: 80px;
+            margin-top: -50px;
+        }
+
+        .content_selection{
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .content_selection>p{
+            display: inline-block;
+            font-size: 21px;
+            width: 200px;
+            margin: 0;
+            height: 40px;
+            padding-top: 10px;
+            padding-left: 100px;
+            padding-right: 100px;
+            text-align: center;
+        }
+
+        .show_island, .show_inland {
+            display: inline-block;
+            border: 1px solid;
+            width: 676px;
+            height: 88px;
+            text-align: center;
+            line-height: 88px;
+            cursor: pointer;
+            margin: 0 10px;
+            font-size: 51px;
+            margin: 0;
+            color: #6d6d6d;
+            background-color: #e2e2e2;
+        }
+
+        .island_selected, .inland_selected {
+            background-color: #2295ff;
+            color: white;
+        }
+
+        .destination_list{
+            list-style: none;
+            margin-left: 1rem;
+            text-align: center;
+        }
+
+        .destination_list>li{
+            list-style: none;
+            display: inline-block;
+            border: 1px solid;
+            border-radius: 30px;
+            font-size: 16px;
+            padding: 10px 20px;
+            width: 50px;
+            margin-top: 10px;
+            margin-right: 26px;
+            color: #2295ff;
+            font-weight: bold;
+        }
+
+        .island_content, .inland_content {
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+            width: 1193px;
+            margin-top: 100px;
+        }
+
+        .list_title{
+            width: 1193px;
+            font-weight: bold;
+            font-size: 21px;
+            margin-top: 4rem;
+            text-align: left;
+            margin-bottom: 5px;
+
+        }
+
+        .recommend_place{
+            position: relative;
+            width: 25rem;
+            height: 21rem;
+            margin-bottom: 4rem;
+            margin-left: 7rem;
+        }
+
+        .recommend_picture{
+            width: 70rem;
+            height: 20rem;
+        }
+
+        .recommend_name{
+            color: rgba(255, 255, 255, 1);
+            background-color: rgba(30, 30, 30, 0.51);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 980px;
+            height: 50px;
+            text-align: center;
+            font-size: 21px;
+            top: 15rem;
+            padding-top: 15px;
+        }
+
+        img.place_picture{
+            width: 282px;
+            height: 210px;
+            margin-bottom: 2rem;
+        }
+
+        .content_selection>p:not(.island_selected):not(.inland_selected) {
+            background-color: #E2E2E2;
+            color: #6D6D6D;
+        }
+
+        .sight_island_list {
+            width: 1193px;
+            text-align: center;
+        }
+
+        .popular_sights {
+            width: 1193px;
+        }
+
+        .visit_sights {
+            width: 1193px;
+        }
+
+        .st_container {
+            flex-wrap: nowrap;
+            overflow-x: hidden;
+            max-width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            background-color: white;
+            width: 310px;
+            height: 230px;
+            bottom: 300px;
+            position: absolute;
+            top: 715px;
+            left: 100px;
+            display: none;
+        }
+
+
+
+        .st_item {
+            padding: 5px;
+            margin-right: 5px;
+            border-radius: 5px;
+            text-align: center;
+            font-size: 14px;
+        } /*지역 선택 css*/
+
+        .pk_table {
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+            position: absolute;
+            display: none;
+            top: 715px;
+            left: 443px;
+            width: 322px;
+        }
+
+        .pk_th, td {
+            padding: 5px;
+            border: 1px solid #ccc;
+            text-align: center;
+            font-size: 16px;
+            background-color: white;
+            width: 322px;
+        }
+
+        .pk_th {
+            background-color: #f2f2f2;
+        }
+
+        td {
+            cursor: pointer;
+        }
+
+        .selected {
+            background-color: #2295ff;
+            color: #fff;
+        } /*캘린더 css*/
+
+        .package_ {
+            display: inline-block;
+            width: 1013px;
+            margin-right: 10px;
+            border: 1px solid #d7d7db;
+            padding: 16px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            overflow-y: hidden;
+        }
+
+        .pak_title {
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0 ;
+            margin-top: 10px;
+         }
+
+         .pak_locate, .pak_time, .pak_num {
+            margin-top: -20px;
+            font-size: 16px;
+            color: #8F8F8F;
+            margin-top: 10px;
+        }
+
+        .pak_img {
+            width: 250px;
+            height: 200px;
+            float: left;
+            margin: 15px;
+            border-radius: 4px;
+        }
+
+        .pak_price, .pak_won {
+            font-size: 21px;
+        }
+
+        .pak_price {
+            font-weight: bold;
+        }
+
+        .pak_price_div {
+            text-align: right;
+            margin-top: 100px;
+        }
+
+        .fav_icon {
+            font-size: 30px;
+            cursor: pointer;
+            color: #ccc;
+            display: flex;
+            float: right;
+        }
+    </style>
+</head>
+<body>
+    <div class="sights_page">
+        <div class="top_img">
+            <img src="" alt="패키지 메인 이미지" class="top_image"></img>
+            <div class="search_container">
+                <input class="searchtext" type="text" id="inputText" onclick="toggleItems()" placeholder="지역 이름" />
+                <input class="searchtext2" type="text" id="inputText2" onclick="toggleItems2()" placeholder="날짜" />
+                <button class="search_btn">검색</button>
+            </div>
+
+            <div id="st_items" class="st_container">
+                <div id="text1" class="st_item" onclick="setText('text1')">서울</div>
+                <div id="text2" class="st_item" onclick="setText('text2')">경기</div>
+                <div id="text3" class="st_item" onclick="setText('text3')">인천</div>
+                <div id="text4" class="st_item" onclick="setText('text4')">전라도</div>
+                <div id="text5" class="st_item" onclick="setText('text5')">경상도</div>
+                <div id="text6" class="st_item" onclick="setText('text6')">충청도</div>
+                <div id="text7" class="st_item" onclick="setText('text7')">강원도</div>
+                <div id="text8" class="st_item" onclick="setText('text8')">제주도</div>
+            </div> <!--지역 선택 띄우기-->
+
+            <table id="pk_calendar" class="pk_table">
+                <thead>
+                  <tr>
+                    <th class="pk_th" colspan="7">
+                      <button onclick="prevMonth()">&lt;</button>
+                      <span id="pk_currentMonth"></span>
+                      <button onclick="nextMonth()">&gt;</button>
+                    </th>
+                  </tr>
+                  <tr>
+                    <th class="pk_th">Sun</th>
+                    <th class="pk_th">Mon</th>
+                    <th class="pk_th">Tue</th>
+                    <th class="pk_th">Wed</th>
+                    <th class="pk_th">Thu</th>
+                    <th class="pk_th">Fri</th>
+                    <th class="pk_th">Sat</th>
+                  </tr>
+                </thead>
+                <tbody id="pk_calendarBody">
+                </tbody>
+              </table>
+
+            <script>
+                function toggleItems() {
+                var items = document.getElementById("st_items");
+                var pkTable = document.getElementById("pk_table");
+
+                if (items.style.display === "none") {
+                    items.style.display = "block";
+                    items.classList.add("st_container");
+                    pkTable.style.display = "none";
+                    pkTable.classList.remove("pk_table");
+                }
+
+                else {
+                    items.style.display = "none";
+                    items.classList.remove("st_container");
+                    pkTable.style.display = "block";
+                    pkTable.classList.add("st_container");
+                }
+
+                }
+
+                function toggleItems2() {
+                  var items = document.getElementById("pk_calendar");
+                  if (items.style.display === "none") {
+                    items.style.display = "block";
+                    items.classList.toggle("pk_table");
+                    item.classList.remove("st_container");
+
+                  } else {
+                    items.style.display = "none";
+                    items.classList.toggle("pk_table");
+                    item.classList.remove("st_container");
+                    }
+                }
+            </script>
+            <!--지역 눌럿을 때 항목 열림-->
+
+            <script>
+                function setText(textId) {
+                    var text = document.getElementById(textId).innerText;
+                    document.getElementById("inputText").value = text;
+                }
+            </script>
+            <!--글자 눌럿을 때 input 뜨게 함-->
+
+            <script>
+                var currentDate = new Date();
+
+                function showCalendar() {
+                  var year = currentDate.getFullYear();
+                  var month = currentDate.getMonth();
+                  var daysInMonth = new Date(year, month + 1, 0).getDate();
+                  var firstDayOfMonth = new Date(year, month, 1).getDay();
+
+                  var calendarBody = document.getElementById("pk_calendarBody");
+                  calendarBody.innerHTML = '';
+
+                  document.getElementById("pk_currentMonth").innerText = `${year}년 ${month + 1}월`;
+
+                  var date = 1;
+                  for (var i = 0; i < 6; i++) {
+                    var row = document.createElement("tr");
+                    for (var j = 0; j < 7; j++) {
+                      if (i === 0 && j < firstDayOfMonth) {
+                        var cell = document.createElement("td");
+                        row.appendChild(cell);
+                      } else if (date > daysInMonth) {
+                        break;
+                      } else {
+                        var cell = document.createElement("td");
+                        cell.innerText = date;
+                        cell.setAttribute("onclick", "selectDate(this)");
+                        row.appendChild(cell);
+                        date++;
+                      }
+                    }
+                    calendarBody.appendChild(row);
+                  }
+                }
+
+                function prevMonth() {
+                  currentDate.setMonth(currentDate.getMonth() - 1);
+                  showCalendar();
+                }
+
+                function nextMonth() {
+                  currentDate.setMonth(currentDate.getMonth() + 1);
+                  showCalendar();
+                }
+
+                function selectDate(cell) {
+                  var selectedCells = document.querySelectorAll('.selected');
+                  selectedCells.forEach(function(selectedCell) {
+                    selectedCell.classList.remove('selected');
+                  });
+                  cell.classList.add('selected');
+                }
+
+                showCalendar();
+            </script>
+            <!--캘린더-->
+        </div>
+        <div class="pachage_content">
+            <div class="inland_content">
+                <div class="sights_list">
+                    <p class="list_title">추천 패키지 여행</p>
+
+                    <div class="activity_list">
+                        <div class="package_">
+                            <img class="pak_img" src="C:\Users\이서진\Desktop\image\다운로드 (10).jpeg" alt="활동 이미지1">
+                            <span class="fav_icon" onclick="toggleFav(this)">♥</span>
+                            <p class="pak_title">[김포출발] 노팁노옵션 제주도/마라도/우도 삼도투어 2박3일</p>
+                            <p class="pak_locate">2박3일 | 김포 출발 | 대한항공</p>
+                            <div class="pak_price_div">
+                                <span class="pak_price">368,503</span><span class="pak_won">원~</span>
+                            </div>
+                        </div>
+
+                        <div class="package_">
+                            <img class="pak_img" src="C:\Users\이서진\Desktop\image\다운로드 (10).jpeg" alt="활동 이미지1">
+                            <span class="fav_icon" onclick="toggleFav(this)">♥</span>
+                            <p class="pak_title">★청주출발★ 청보리의 섬 가파도+럭셔리 요트투어 3박4일</p>
+                            <p class="pak_locate">3박 4일 | 청주 출발</p>
+                            <div class="pak_price_div">
+                                <span class="pak_price">504,303</span><span class="pak_won">원~</span>
+                            </div>
+                        </div>
+
+                        <div class="package_">
+                            <img class="pak_img" src="C:\Users\이서진\Desktop\image\다운로드 (10).jpeg" alt="활동 이미지1">
+                            <span class="fav_icon" onclick="toggleFav(this)">♥</span>
+                            <p class="pak_title">[김포출발][특가] 제주 속의 섬 우도+제주도/송악산/곶자왈 3박4일</p>
+                            <p class="pak_locate">3박4일 | 김포 출발</p>
+                            <div class="pak_price_div">
+                                <span class="pak_price">189,405</span><span class="pak_won">원~</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+         </div>
+    </div>
+</body>
+
+</html>

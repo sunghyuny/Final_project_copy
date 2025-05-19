@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+{% include 'Navbar.html'%}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>친구</title>
+    <script>
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var email = document.querySelector('input[name="email"]').value;
+            fetch('/get_user_id_by_email/?email=' + email)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.user_id) {
+                        document.getElementById('user_id').value = data.user_id;
+                        this.action = "{% url 'Accounts:send_friend_request' %}";
+                        this.submit();
+                    } else {
+                        alert('해당 이메일을 가진 사용자를 찾을 수 없습니다.');
+                    }
+                });
+        });
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .mypage {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypage_content {
+            display: flex;
+            justify-content: space-between;
+            width: 86rem;
+            height: 680px;
+            margin-top: 50px;
+        }
+
+        .page_content {
+            float: left;
+            margin-right: 60px;
+            width: 300px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .content_list {
+            border-radius: 10px;
+            border: 3px solid;
+            width: 200px;
+            text-align: left;
+            font-size: 16px;
+            list-style: none;
+            margin-top: 40px;
+            border-color: #2295ff;
+        }
+
+        .content_list>li {
+            margin: 25px 0px 25px 70px;
+            text-align: center;
+            padding-right: 70px;
+            color: #2295ff;
+        }
+
+        .content_list>li>a {
+            text-decoration: none; /* 밑줄 제거 */
+            color: inherit; /* 링크 색상 상속 */
+        }
+
+        .content_list>hr {
+            margin: 0;
+            padding: 0;
+        }
+
+        .content_name {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 50px;
+        }
+
+        .detail_page {
+            display: flex;
+            justify-content: space-between;
+            width: 900px;
+            height: 500px;
+        }
+
+        #showFriends {
+            font-weight: bold;
+        }
+
+        .friend_list {
+            width: 45%;
+        }
+
+        .friend_name_list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .friend_name {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .friend_name img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+
+        .delete_btn {
+            color: white;
+            background-color: #ff4d4d;
+            border: none;
+            font-size: 14px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .add_friend {
+            width: 45%;
+        }
+
+        .add_content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .add_email {
+            margin-bottom: 10px;
+        }
+
+        .add_btn {
+            color: white;
+            background-color: #2295ff;
+            border: none;
+            font-size: 14px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+
+        .request_friend {
+            margin-top: 10px; /* 간격 줄이기 */
+        }
+
+        .request_friend_item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .agree_btn, .refuse_btn {
+            color: white;
+            background-color: #2295ff;
+            border: none;
+            font-size: 14px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .divider {
+            border-left: 1px solid #2295ff;
+            height: 100%;
+            margin: 0 5px; /* 간격 줄이기 */
+        }
+    </style>
+</head>
+<body>
+    <div class="mypage">
+        <div class="mypage_content">
+            <div class="page_content">
+                <ul class="content_list">
+                    <li id="showMyInfo"><a href="/Accounts/mypage/">내 정보</a></li><hr>
+                    <li id="showLikes">좋아요</li><hr>
+                    <li id="showPlans"><a href="/Accounts/userplan/">계획</a></li><hr>
+                    <li id="showReservations"><a href="/Accounts/my_reservations">예약</a></li><hr>
+                    <li id="showFriends"><a href="/Accounts/Myfriends/">친구</a></li><hr>
+                    <li id="showPosts"><a href="/Accounts/my_post/">게시물</a></li><hr>
+                    <li id="showchat"><a href="/Accounts/my-chats/">매칭</a></li>
+                </ul>
+            </div>
+
+            <div class="detail_page">
+                <div class="friend_list">
+                    <p class="content_title">친구 목록 ({{ friends.count }}명)</p>
+                    <ul class="friend_name_list">
+                        {% for friend in friends %}
+                        <li class="friend_name">
+                            {% if friend.profile_picture %}
+                            <img src="{{ friend.profile_picture.url }}" alt="프로필 사진">
+                            {% else %}
+                            <img src="{% static 'profile_pictures/default.jpg' %}" alt="기본 프로필 사진">
+                            {% endif %}
+                            {{ friend.username }}
+                            <form action="{% url 'Accounts:delete_friend' friend.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="delete_btn">삭제</button>
+                            </form>
+                        </li>
+                        {% empty %}
+                        <li>친구가 없습니다.</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="divider"></div>
+
+                <div class="add_friend">
+                    <p class="content_title">친구 관리</p>
+                    <div class="add_content">
+                        <p>친구 아이디 입력</p>
+                        <!-- 친구 추가 -->
+                        <form action="{% url 'Accounts:send_friend_request' %}" method="post">
+                            {% csrf_token %}
+                            <input type="email" name="email" class="add_email" placeholder="친구 e-mail를 입력하세요"><br>
+                            <button type="submit" class="add_btn">추가</button>
+                        </form>
+                    </div>
+
+                    <div class="request_friend">
+                        <p class="content_title">친구 요청</p>
+                        {% for request in friend_requests %}
+                        <div class="request_friend_item">
+                            <p>{{ request.from_user.username }}님으로부터 친구 요청이 왔습니다</p>
+                            <form action="{% url 'Accounts:accept_friend_request' request.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="agree_btn">수락</button>
+                            </form>
+                            <form action="{% url 'Accounts:reject_friend_request' request.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="refuse_btn">거절</button>
+                            </form>
+                        </div>
+                        {% empty %}
+                        <p>친구 요청이 없습니다.</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

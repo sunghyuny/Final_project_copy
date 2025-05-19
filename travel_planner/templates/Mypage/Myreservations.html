@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+{% include 'Navbar.html'%}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 예약 목록</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .mypage{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypage_content{
+            justify-content: center;
+            width: 86rem;
+            height: 680px;
+            margin-top: 50px;
+        }
+
+        .page_content{
+            float: left;
+            margin-right: 60px;
+            width: 300px;
+            text-align: center;
+            font-size: 16px;
+        }
+        .content_list{
+            border-radius: 10px;
+            border: 3px solid;
+            width: 200px;
+            text-align: left;
+            font-size: 16px;
+            list-style: none;
+            margin-top: 40px;
+            border-color: #2295ff;
+        }
+
+        .content_list>li{
+            margin: 25px 0px 25px 70px;
+            text-align: center;
+            padding-right: 70px;
+            color: #2295ff;
+        }
+
+        .content_list>hr{
+            margin: 0;
+            padding: 0;
+        }
+
+        .content_name{
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .detail_page{
+            display: inline-block;
+            width: 900px;
+            height: 500px;
+        }
+
+        #showReservations{
+            font-weight: bold;
+        }
+
+        .res_package, .res_lodg, .lodging_title, .package_title{
+            border: 1px solid;
+            display: inline-block;
+            text-align: center;
+            width: 100px;
+            height: 40px;
+            margin: 0px 40px 30px 0px;
+            line-height: 40px;
+            cursor: pointer;
+        }
+
+        .selected_tab {
+            background-color: #2295ff;
+            color: white;
+        }
+
+        .lodg {
+            border: 1px solid;
+            width: 770px;
+            height: 140px;
+            display: flex;
+            align-items: center;
+            margin-right: 10px;
+            border: 1px solid #d7d7db;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .hotel_img {
+            width: 300px;
+            height: 130px;
+            float: left;
+            margin: 10px 15px 10px 15px;
+            border-radius: 4px;
+        }
+
+        .lodg_title {
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0 ;
+            margin-top: 10px;
+        }
+
+        .lodg_locate {
+            margin-top: -20px;
+            font-size: 13px;
+            color: #8F8F8F;
+            text-decoration: underline;
+            margin-top: 10px;
+        }
+
+        .lodg_star {
+            color: #2295FF;
+            display: inline-block;
+            margin: 5px 5px;
+        }
+
+        .lodg_price {
+            font-size: 21px;
+            font-weight: bold;
+            color: #2295FF;
+        }
+
+        .fav_icon {
+            font-size: 30px;
+            cursor: pointer;
+            color: #ccc;
+            display: flex;
+            float: right;
+        }
+
+        .fav_icon.fav {
+            color: red;
+        }      
+
+        .content_sang {
+            font-size: 24px;
+            color:#2295FF;
+            margin-left: 340px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .package_item, .lodging_item {
+            border: 1px solid #d7d7db;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .package_item img, .lodging_item img {
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+            border-radius: 4px;
+        }
+
+        .package_title, .lodging_title {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .package_schedule, .package_price, .lodging_schedule, .lodging_price {
+            font-size: 16px;
+            color: #555;
+        }
+
+        .delete-button {
+            background-color: #ff4d4d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mypage">
+        <div class="mypage_content">
+            <div class="page_content">
+                <ul class="content_list">
+                     <li id="showMyInfo"><a href="/Accounts/mypage/">내 정보</a></li><hr>
+                     <li id="showLikes">좋아요</li><hr>
+                     <li id="showPlans"><a href="/Accounts/userplan/">계획</a></li><hr>
+                     <li id="showReservations"><a href="/Accounts/my_reservations">예약</a></li><hr>
+                     <li id="showFriends"><a href="/Accounts/Myfriends/">친구</a></li><hr>
+                     <li id="showPosts"><a href="/Accounts/my_post/">게시물</a></li><hr>
+                     <li id="showchat"><a href="/Accounts/my-chats/">매칭</a></li>
+                 </ul>
+             </div>
+            <div class="content_name">
+                <p class="content_sang">마이페이지</p>
+            </div>
+
+            <div class="detail_page">
+                <div class="detail">
+                    <div class="reservation">
+                        <p class="res_package" onclick="selectTab(this)">패키지 예약</p>
+                        <p class="res_lodg" onclick="selectTab(this)">숙소 예약</p>
+                        <div id="lodg_info" class="lodging" style="display: none;">
+                            {% for reservation in hotel_reservations %}
+                                <div class="lodging_item">
+                                    <a href="{% url 'Accounts:reservation_detail' reservation.id %}">
+                                        <img src="{{ reservation.accommodation.photo.url }}" alt="{{ reservation.accommodation.name }}">
+                                        <div>
+                                            <p class="lodging_title">{{ reservation.accommodation.name }}</p>
+                                            <p class="lodging_schedule">{{ reservation.check_in }} - {{ reservation.check_out }}</p>
+                                            <p class="lodging_price">총 가격: {{ reservation.total_price }}원</p>
+                                        </div>
+                                    </a>
+                                    <form method="post" action="{% url 'Accounts:reservation_delete' reservation.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="delete-button">삭제</button>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div id="package_info" class="package">
+                            {% for reservation in travel_reservations %}
+                                <div class="package_item">
+                                    <a href="{% url 'Accounts:reservation_detail' reservation.id %}">
+                                        <img src="{{ reservation.package.image.url }}" alt="{{ reservation.package.destination }}">
+                                        <div>
+                                            <p class="package_title">{{ reservation.package.destination }}</p>
+                                            <p class="package_schedule">{{ reservation.package.start_date }} - {{ reservation.package.end_date }}</p>
+                                            <p class="package_price">총 가격: {{ reservation.total_price }}원</p>
+                                        </div>
+                                    </a>
+                                    <form method="post" action="{% url 'Accounts:reservation_delete' reservation.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="delete-button">삭제</button>
+                                    </form>
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                  
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+<script>    
+    window.onload = function() {
+        selectTab(document.querySelector('.res_package'));
+    };
+
+    function selectTab(element) {
+        var tabs = document.querySelectorAll('.res_package, .res_lodg');
+        tabs.forEach(function(tab) {
+            tab.classList.remove('selected_tab');
+        });
+        element.classList.add('selected_tab');
+
+        var tabId = element.classList.contains('res_package') ? 'package' : 'lodg';
+        showTab(tabId + '_info');
+    }
+
+    function showTab(tabId) {
+        if (tabId === 'package_info') {
+            document.getElementById('package_info').style.display = 'block';
+            document.getElementById('lodg_info').style.display = 'none';
+        } else {
+            document.getElementById('package_info').style.display = 'none';
+            document.getElementById('lodg_info').style.display = 'block';
+        }
+    }
+</script>
+</html>

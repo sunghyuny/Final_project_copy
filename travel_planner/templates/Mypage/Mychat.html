@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+{% include 'Navbar.html'%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>친구</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        .mypage{
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mypage_content{
+            justify-content: center;
+            width: 86rem;
+            height: 680px;
+            margin-top: 50px;
+        }
+
+        .page_content{
+            float: left;
+            margin-right: 0px;
+            width: 300px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .content_list{
+            border-radius: 10px;
+            border: 3px solid;
+            width: 200px;
+            text-align: left;
+            font-size: 16px;
+            list-style: none;
+            margin-top: 40px;
+            border-color: #2295ff;
+        }
+
+        .content_list>li{
+            margin: 25px 0px 25px 70px;
+            text-align: center;
+            padding-right: 70px;
+            color: #2295ff;
+        }
+
+        .content_list>hr{
+            margin: 0;
+            padding: 0;
+        }
+
+        .content_name{
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .detail_page{
+            display: inline-block;
+            width: 900px;
+            height: 500px;
+        }
+
+        #showchat{
+            font-weight: bold;
+        }
+
+        .content{
+            display: flex;
+            float: left;
+            margin-left: 20px;
+        }
+
+        .room_content{
+            width: 500px;
+            height: 80px;
+        }
+
+        .content_title{
+            font-weight: bold;
+            font-size: 19px;
+            margin-bottom: 10px;
+        }
+
+        .room_image{
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 1px solid;
+            display: inline-block;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .room_img{
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .list_content{
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .room_name{
+            list-style-type: none;
+        }
+
+        .room_content{
+            border: 1px solid;
+            background-color: #D9D9D9;
+
+        }
+
+        .delete_btn{
+            background-color: #2295ff;
+            color: white;
+            border: none;
+            font-size: 20px;
+            float: right;
+            margin: 25px 10px 0px 0px;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="mypage">
+        <div class="mypage_content">
+            <div class="page_content">
+                <ul class="content_list">
+                    <li id="showMyInfo"><a href="/Accounts/mypage/">내 정보</a></li><hr>
+                    <li id="showLikes">좋아요</li><hr>
+                    <li id="showPlans"><a href="/Accounts/userplan/">계획</a></li><hr>
+                    <li id="showReservations"><a href="/Accounts/my_reservations">예약</a></li><hr>
+                    <li id="showFriends"><a href="/Accounts/Myfriends/">친구</a></li><hr>
+                    <li id="showPosts"><a href="/Accounts/my_post/">게시물</a></li><hr>
+                    <li id="showchat"><a href="/Accounts/my-chats/">매칭</a></li>
+                </ul>
+            </div>
+
+            <div class="content_name">
+                <p>마이페이지</p>
+            </div>
+
+            <div class="detail_page">
+                <div class="detail">
+                    <div class="chat">
+                        <div class="content">
+                            <div class="chat_list">
+                                <p class="content_title">참여되어 있는 채팅방</p>
+                                <ul class="chat_room_list">
+                                    {% for room in user_chat_rooms %}
+                                        <li class="room_name">
+                                            {% if request.user == room.creator %}
+                                                <form method="post" action="{% url 'match:delete_chat_room' room.id %}">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="delete_btn">삭제</button>
+                                                </form>
+                                                {% endif %}
+                                            <div class="room_content">
+                                                <div class="room_image">
+                                                    <img src="{{ room.image.url }}" alt="" class="room_img">
+                                                </div>
+                                                <div class="list_content">
+                                                    <p class="room_title"><a href="{% url 'match:chat_room_detail' room.id %}">{{ room.name }}</a></p>
+                                                    <p class="date">{{ room.date }}</p>
+                                                </div>
+
+                                            </div>
+                                            
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

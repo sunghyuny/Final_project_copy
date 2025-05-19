@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+{% include 'Navbar.html'%}
+{% load humanize %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>요약</title>
+    <style>
+
+        html, body {
+            overflow-x: hidden; /* 가로 스크롤을 숨김 */
+        }
+
+        .progress{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1550px;
+            overflow-x: hidden;
+            margin: 0 auto;
+        }
+
+        .Fill_Circle{
+            width: 100px;
+            height: 100px;
+            background: #2295FF;
+            border: 2px solid #2295FF;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block ;
+            margin: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .Fill_Circle2{
+            width: 100px;
+            height: 100px;
+            background: #2295FF;
+            border: 2px solid #2295FF;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block ;
+            margin: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .Fill_Circle2>p {
+            margin-top: 35px;
+        }
+
+        .Fill_Circle2>a{
+            text-decoration: none;
+            color: white;
+        }
+
+        .Circle{
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            color:#2295FF;
+            border: 3px solid #2295FF;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block;
+            position: relative;
+            margin: 30px;
+            z-index: 2;
+        }
+
+        .Circle>p {
+            margin-top: 35px;
+        }
+
+        .Circle>a{
+            text-decoration: none;
+            color: #2295ff;
+        }
+
+        .Fill_Circle> a> p {
+            margin-top: 20px;
+        }
+
+        .Fill_Circle2> a> p {
+            margin-top: 25px;
+        }
+
+        .Circle> a> p {
+            margin-top: 30px;
+        }
+
+        .Circle_Line {
+            width: 700px;
+            color: #2295FF;
+            border: 2px solid;
+            position : absolute;
+            z-index: 1;
+        }
+
+        .content {
+            width: 1118.4px;
+            overflow-x: hidden;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-y: hidden;
+        }
+
+        .page_title{
+            text-align: center;
+            color: #2295FF;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .contents_line{
+            width: 1118.4px;
+            margin: 0;
+            color: #2295FF;
+            border: 2px solid;
+        }
+
+        .button_group{
+            display: flex;
+            justify-content: center;
+        }
+        .button{
+            background-color: #2295FF;
+            border-radius: 5px;
+            color: white;
+            width: 150px;
+            height: 40px;
+            font-size: 16px;
+            border: none;
+            margin: 20px;
+        }
+        .plan{
+            margin-top: 30px;
+            margin-bottom: 30px;
+            width: 1118.4px;
+
+        }
+
+        .sum_img{
+            width: 400px;
+            height: 200px;
+            margin: 15px;
+            border-radius: 4px;
+        }
+
+        .people {
+            display: flex;
+            align-items: center; 
+            justify-content: flex-start; 
+            position: relative;
+            height: 150px;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+
+        .people1 {
+            float: left;
+        }
+
+        .people2 {
+            float: left; /* float 제거 */
+            margin-left: 300px; /* 오른쪽으로 이동 */
+            text-align: left;
+        }
+
+        .length_hr {
+            height: 187px;
+            width: 0.1px;
+            min-height: 1em;
+            /* margin-top: -51px; */
+        }
+
+        .people3 {
+            float: right;
+            text-align: center;
+            /* margin-top: -150px; */
+            margin-right: 20px;
+            clear: none;
+        }
+
+        .detail {
+            font-weight: bold;
+            color: #2295FF;
+        }
+
+        .detail2 {
+            padding-left: 20px;
+
+        }
+
+        .date_box1 {
+            display:block;
+            width:250px;
+            padding:15px;
+            margin-bottom: 10px;
+            text-align:center;
+            border:1px solid rgb(0, 0, 0);
+            background:rgb(255, 255, 255);
+            margin-left: 30px;
+            border-radius: 5px;
+        }
+
+        .date_box2 {
+            display:block;
+            width:250px;
+            padding:15px;
+            text-align:center;
+            border:1px solid rgb(0, 0, 0);
+            background:rgb(255, 255, 255);
+            margin-left: 30px;
+            border-radius: 5px;
+        }   
+
+        .location_box {
+            display: flex;
+            align-items: center; 
+            justify-content: flex-start; 
+            border:1px solid rgb(0, 0, 0);
+            height: 180px;
+            line-height: 150px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .summary_location_img {
+            width: 250px;
+            height: 160px;
+            margin: 10px;
+            float: left;
+        }
+
+        .summary_location_name {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .summary_location_name2 {
+            font-size: 16px;
+            font-weight: 100;
+            margin-top: 10px;
+            margin-left: 10px;
+        }
+
+        .lodg_box {
+            border:1px solid rgb(0, 0, 0);
+            line-height: 150px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+
+        .lodg_select, .activity_select {
+            display: flex;
+            align-items: center;
+            border: 1px solid rgb(0, 0, 0);
+            line-height: 150px;
+            margin-bottom: 30px;
+            margin: 10px;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+
+        .sum_img{
+            width: 300px;
+            height: 200px;
+        }
+
+        .detail_{
+            font-weight: bold;
+            font-size: 20px;
+            margin-left: 20px;
+        }
+
+        
+        .activity_select {
+            border: 1px solid #ccc;
+            padding: 0px 10px 10px;
+            box-sizing: border-box;
+        }
+    
+        .activity_select_list {
+            max-height: 500px;
+            overflow-y: scroll;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            width: 1100px;
+            margin-top: 10px;
+        }
+    
+        .activity_select_item {
+            display: flex;
+            align-items: center;
+            border: 1px solid black;
+            width: 100%;
+            padding: 5px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .activity_select_item img {
+            width: 200px;
+            height: 100px;
+            margin-right: 10px;
+        }
+
+        .activity_select_item p {
+            margin: 0;
+        }
+
+
+
+        .lodg_select img, .activity_select img {
+            margin-right: 10px;
+        }
+
+        
+
+        .total_box {
+            display: flex;
+            align-items: center; 
+            justify-content: flex-start; 
+            border: 1px solid rgb(0, 0, 0);
+            margin-top: 30px;
+            position: relative;
+            border-radius: 5px;
+        }
+
+        .total_plus {
+            text-align: left;
+            margin-left: 20px;
+            flex-grow: 2; 
+        }
+
+        .total_plus_p {
+            text-align: center;
+        }
+
+        .length_hr2 {
+            height: 187px;
+            width: 0.1px;
+            margin: 0 20px;
+            background-color: rgb(0, 0, 0);
+        }
+
+        .total_pri {
+            text-align: center;
+            margin-right: 20px;
+            margin-bottom: 10px;
+        }
+
+        table{
+            margin-right: 30px;
+        }
+
+        td{
+            width: 50px;
+            text-align: right;
+        }
+    </style>
+
+</head>
+<body>
+    <div>
+        <div class="progress">
+            <div class='Fill_Circle2'>
+                <a href="/planner/"><p>기간/<br>인원</p></a>
+            </div>
+            <div class='Fill_Circle2'>
+                <a href="/planner/plan1/"><p>여행지</p></a>
+            </div>
+            <div class='Fill_Circle2'>
+                <a href="/planner/plan2/"><p>숙소</p></a>
+            </div>
+            <div class='Fill_Circle2'>
+                <a href="/planner/plan3/"><p>활동</p></a>
+            </div>
+            <div class='Fill_Circle2'>
+                <a href="/planner/plan4/"><p>요약</p></a>
+            </div>
+            <hr class="Circle_Line"></hr>
+        </div>
+        <div class="content">
+            <p class='page_title'>여행 계획 요약</p>
+            <hr class="contents_line">
+            <div class="plan">
+                <div class="people">
+                    <div class="people1">
+                        <div class="date_box1">
+                            {{ trip_plan.departure_date }}
+                        </div>
+                        <div class="date_box2">
+                            {{ trip_plan.arrival_date }}
+                        </div>
+                    </div>
+                    <div class="people2">
+                        <table>
+                           <tr>
+                            <th>아동</th>
+                            <td>{{ request.session.children }}명</td>
+                           </tr>
+                           <tr>
+                            <th>청소년</th>
+                            <td>{{ request.session.teens }}명</td>
+                           </tr>
+                           <tr>
+                            <th>성인</th>
+                            <td>{{ request.session.adults }}명</td>
+                           </tr>
+                        </table>
+                    </div>                      
+                    <br>
+                    <hr class="length_hr">
+                    <div class="people3">
+                        <p>총 인원</p>
+                        <p class="detail">{{ trip_plan.total_people }}명</p>
+                    </div>
+                    
+                </div>
+                <hr>
+                <div class="location">
+                    <h3>{{ trip_plan.destination }}<span> > </span>{{ request.session.destination }}</h3>
+                    <div class="lodg_select">
+                        <img class="sum_img" src="{{ trip_plan.selected_accommodation.photo.url }}" alt="{{ trip_plan.selected_accommodation.name }}"> 
+                        <p class="detail_">{{ trip_plan.selected_accommodation.name }}</p>
+                    </div>
+                </div>
+
+                <div class="lodg_box">
+                    
+                    <div class="activity_select">
+                        <div class="activity_select_list"> 
+                            {% for activity in selected_activities %}
+                            <div class="activity_select_item"> 
+                                <img class="sum_img" src="{{ activity.photo.url }}" alt="{{ activity.name }}">
+                                <p class="detail_">{{ activity.name }}</p>
+                                <p>가격: {{ activity.price|intcomma }}원</p>
+                            </div>
+
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                </div>
+
+                <div class="total_box">
+                    <div class="total_plus">
+                        <p class="total_plus_p">숙박: {{ trip_plan.selected_accommodation.price|intcomma }}원</p> 
+                        <p class="total_plus_p">식당: {{ trip_plan.food_cost|intcomma }}원</p> 
+                        <p class="total_plus_p">활동: {{ total_activity_cost|intcomma }}원</p> 
+                    </div>
+                    <hr class="length_hr2">
+                    <div class="total_pri">
+                        <p>총액</p>
+                        <p class="detail">{{ trip_plan.total_cost|intcomma }}원</p>
+                    </div>
+                </div>
+            </div>
+            <div class="button_group">
+                <button class="button" id='save_btn' onclick="savePlan()">저장</button>
+                <button class="button" id='share_btn'>공유</button>
+                <button class="button" id='print_btn'>출력</button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

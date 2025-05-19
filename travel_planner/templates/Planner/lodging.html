@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+{% include 'Navbar.html'%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Step3 숙소 선택 | Travel Plan</title>
+    <style>
+        .progress{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 1550px;
+            overflow-x: hidden;
+            margin: 0 auto;
+        }
+
+        .Fill_Circle{
+            width: 100px;
+            height: 100px;
+            background: #2295FF;
+            border: 2px solid #2295FF;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block ;
+            margin: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .Fill_Circle2{
+            width: 100px;
+            height: 100px;
+            background: #2295FF;
+            border: 2px solid #2295FF;
+            border-radius: 50%;
+            color: white;
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block ;
+            margin: 30px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .Fill_Circle2>p {
+            margin-top: 35px;
+        }
+
+        .Fill_Circle2>a{
+            text-decoration: none;
+            color: white;
+        }
+
+        .Circle{
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            color:#2295FF;
+            border: 3px solid #2295FF;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block;
+            position: relative;
+            margin: 30px;
+            z-index: 2;
+        }
+
+        .Circle>p {
+            margin-top: 35px;
+        }
+
+        .Circle>a{
+            text-decoration: none;
+            color: #2295ff;
+        }
+
+        .Fill_Circle> a> p {
+            margin-top: 20px;
+        }
+
+        .Fill_Circle2> a> p {
+            margin-top: 25px;
+        }
+
+        .Circle> a> p {
+            margin-top: 30px;
+        }
+
+        .Circle_Line {
+            width: 700px;
+            color: #2295FF;
+            border: 2px solid;
+            position : absolute;
+            z-index: 1;
+        }
+
+        .search_main {
+            width: 1550px;
+            overflow-x: hidden;
+            margin: 0 auto;
+        }
+
+        .drop_btn {
+            width: 150px;
+            height: 30px;
+            font-size: 17px;
+            text-align: center;
+            background-color: white;
+            overflow-y: hidden;
+        }
+
+        .search_filter {
+            border: 1px solid #d7d7db;
+            padding: 16px;
+            border-radius: 4px;
+            float: left;
+            margin-left: 200px;
+            top: 20px;
+            left: 20px;
+        }
+
+        .select_filter2 {
+            border: 1px solid #d7d7db;
+            padding: 16px;
+            border-radius: 4px;
+            float: left;
+            width: 150px;
+            height: 353px;
+            clear: both;
+            margin-top: 20px;
+            margin-left: 200px;
+            padding-top: -20px;
+            margin-bottom: 2000px;
+        }
+
+        .array {
+            color: #949494;
+            margin:-3px 100px 15px 475px;
+        }
+
+        #filter_title {
+            font-size: 17px;
+            margin-top: -5px;
+            font-weight: bold;
+        }
+
+        .filter_butitle {
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+
+        .page_title{
+            text-align: center;
+            color: #2295FF;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .contents_Line{
+            width: 69.9rem;
+            margin: 0;
+            margin-left: 12rem;
+            color: #2295FF;
+            border: 2px solid;
+            margin-bottom: 20px;
+        }
+
+        .lodg {
+            display: inline-block;
+            width: 770px;
+            height: 220px;
+            margin-right: 10px;
+            border: 1px solid #d7d7db;
+            margin-left: 90px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        #dropdown_content {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        #dropdown_content {
+            background-color: white;
+            border: 1px solid;
+            margin-top: 0;
+            width: 150px;
+            height: 100px;
+            font-size: 17px;
+            text-align: center;
+            background-color: white;
+            overflow-y: hidden;
+        }
+
+        #star {
+            display: inline-block;
+            width: 17px;
+            height: 17px;
+            border: 2px solid #949494;
+        }
+
+        #star :checked {
+            background-color: #2295FF;
+            border-color: #2295FF;
+        }
+
+        .next_btn {
+            background-color: #2295FF;
+            border: 0;
+            padding: 10px;
+            padding-left: 60px;
+            padding-right: 60px;
+            border-radius: 4px;
+            color: white;
+            width: 160px;
+            height: 45px;
+            text-align: center;
+            margin-left: 350px;
+            margin-top: 40px;
+        }
+
+         .clicked {
+            background-color: rgb(93, 93, 93);
+        }
+
+        .price_text {
+            width: 120px;
+
+        }
+
+        .price_wave {
+            margin-top: -3px;
+            margin-bottom: -3px;
+        }
+
+        .lodg_check {
+            width: 50px;
+            height: 50px;
+        }
+
+        .hotel_img {
+            width: 300px;
+            height: 200px;
+            float: left;
+            margin: 10px 15px 10px 15px;
+            border-radius: 4px;
+        }
+
+        .lodg_title {
+            font-size: 21px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0 ;
+            margin-top: 10px;
+         }
+
+        .lodg_locate {
+            margin-top: -20px;
+            font-size: 13px;
+            color: #8F8F8F;
+            text-decoration: underline;
+            margin-top: 10px;
+        }
+
+        .lodg_star {
+            color: #2295FF;
+            display: inline-block;
+            margin: 5px 5px;
+        }
+
+        .lodg_price {
+            font-size: 21px;
+            font-weight: bold;
+            color: #2295FF;
+        }
+
+        .lodg_check {
+            float: right;
+            margin-right: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <div class="progress">
+            <div class='Fill_Circle2'>
+                <a href="/planner/"><p>기간/<br>인원</p></a>
+            </div>
+            <div class='Fill_Circle2'>
+                <a href="/planner/plan1/"><p>여행지</p></a>
+            </div>
+            <div class='Fill_Circle2'>
+                <a href="/planner/plan2/"><p>숙소</p></a>
+            </div>
+            <div class='Circle'>
+                <a href="/planner/plan3/"><p>활동</p></a>
+            </div>
+            <div class='Circle'>
+                <a href="/planner/plan4/"><p>요약</p></a>
+            </div>
+            <hr class="Circle_Line">
+        </div>
+
+        <div class="search_main">
+            <p class='page_title'>숙소 선택</p>
+            <hr class="contents_Line"></hr>
+            <div class="search_filter">
+                <p id="filter_title">검색 필터</p>
+                <div class="filter_menu">
+                    <button class="drop_btn">-------종류-------</button>
+                    <div id="dropdown_content">
+                        <div class="dropdown_item">호텔</div>
+                        <div class="dropdown_item">모텔</div>
+                        <div class="dropdown_item">여관</div>
+                        <div class="dropdown_item">민박</div>
+                    </div>
+                </div>
+                <p class="filter_butitle">등급</p>
+                <div class="filter_star">
+                    <input type="checkbox" class="star" name="star_rating"><span class="star_span">★★★★★</span>
+                    <br>
+                    <input type="checkbox" class="star" name="star_rating"><span class="star_span">★★★★☆</span>
+                    <br>
+                    <input type="checkbox" class="star" name="star_rating"><span class="star_span">★★★☆☆</span>
+                    <br>
+                    <input type="checkbox" class="star" name="star_rating"><span class="star_span">★★☆☆☆</span>
+                    <br>
+                    <input type="checkbox" class="star" name="star_rating"><span class="star_span">★☆☆☆☆</span>
+                </div>
+                <p class="filter_butitle">가격</p>
+                <div class="filter_price">
+                    <input type="text" class="price_text">
+                    <p class="price_wave">~</p>
+                    <input type="text" class="price_text">
+                </div>
+            </div>
+
+            <br>
+            
+            <div class="select_filter2">
+                <div class="search_bufilter2">
+                    <p class="filter_butitle">기간/인원</p>
+                    <br>
+                    <p class="filter_butitle">여행지</p>
+                    <br>
+                    <p class="filter_butitle">숙소</p>
+                    <br>
+                    <p class="filter_butitle">활동</p>
+                </div>
+            </div>
+
+            <p class="array">정렬 | 별점 평점 인기 가격 후기 거리</p>
+
+            <!-- 숙소 선택 폼 -->
+            <form action="" method="post">
+                {% csrf_token %}
+                <div class="lodging_list">
+                    {% if accommodations %}
+                        {% for accommodation in accommodations %}
+                        <div class="lodg">
+                            <img class="hotel_img" src="{{ accommodation.photo.url }}" alt="{{ accommodation.name }}"/>
+                            <input type="hidden" name="accommodation_id" value="{{ accommodation.id }}">
+                            <p class="lodg_title">{{ accommodation.name }}</p>
+                            <p class="lodg_locate">{{ accommodation.amenities }}</p>
+                            <p class="lodg_price">{{ accommodation.price }}</p>
+                            <input type="checkbox" name="selected_accommodations" class="lodg_check" value="{{ accommodation.id }}">
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p>상품이 없습니다</p>
+                    {% endif %}
+                    <button type="submit" class="next_btn">다음</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.querySelector(".drop_btn").addEventListener("click", function() {
+                var content = document.getElementById("dropdown_content");
+                if (content.style.display === "block") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "block";
+                }
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var checkboxes = document.querySelectorAll('.star');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.addEventListener('change', function() {
+                    checkboxes.forEach(function(other) {
+                        if (other !== checkbox) other.checked = false;
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+{% include 'Navbar.html' %}
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .content {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .main_img {
+            width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
+        }
+
+        .community_content {
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .menu_Community {
+            font-size: 19px;
+            border: none;
+            border-bottom: 1px solid gray;
+            background-color: white;
+            margin-right: 30px;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-left:0px;
+        }
+
+        .search_text1 {
+            border: none;
+            outline: none;
+            border-bottom: 1px solid gray;
+            font-size: 18px;
+            float: right;
+            margin-bottom: 2px;
+            padding: 5px 10px;
+            margin-left: 0px;
+            height: 50px;
+        }
+
+        .search_text1:focus {
+            border: none;
+            outline: none;
+        }
+
+        .contents_Line {
+            border: 2px solid;
+            margin: 40px auto 30px auto;
+            width: 100%;
+            max-width: 1500px;
+        }
+
+        .create_btn {
+            background-color: #2295ff;
+            border: none;
+            border-radius: 10px;
+            color: white;
+            float: right;
+            width: 120px;
+            height: 30px;
+            font-size: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-left:100000px;
+            
+        }
+
+        .create_btn a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .community_list {
+            margin-top: 70px;
+        }
+
+        .post {
+            margin-bottom: 20px;
+        }
+
+        .date {
+            color: #5B5B5B;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .title {
+            font-weight: bold;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .username {
+            color: #8d8d8d;
+            margin-bottom: 30px;
+        }
+
+        .locate_list {
+            display: none;
+            position: absolute;
+            background-color: white;
+            border: 1px solid gray;
+            z-index: 1000;
+        }
+
+        .city_list {
+            list-style: none;
+            border: 1px solid;
+            width: 100px;
+            padding: 10px;
+            margin: 0;
+        }
+
+        .city_list li {
+            padding: 5px 0;
+        }
+
+        .city_list li:hover {
+            background-color: #f0f0f0;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="community_page">
+        <div class="page_img">
+            <img src="{% static 'image/110.jpg' %}" alt="main image" class="main_img">
+        </div>
+        <hr class="contents_Line">
+        <div class="content">
+            <div class="community_content">
+                <div class="search_content">
+                    <button class="menu_Community" id="city">도  &emsp;&emsp;&emsp;▽</button>
+                    <button class="menu_Community">시  &emsp;&emsp;&emsp;▽</button>
+                    <button class="menu_Community">유형 &emsp;&emsp;&emsp;▽</button>
+                    <input type="text" placeholder="검색어를 입력하세요" class="search_text">
+                </div>
+                <div class='locate_list' id="locate_list">
+                    <ul class="city_list">
+                        <li>서울</li>
+                        <li>경기</li>
+                        <li>인천</li>
+                        <li>전라도</li>
+                        <li>경상도</li>
+                        <li>충청도</li>
+                        <li>강원도</li>
+                        <li>제주도</li>
+                    </ul>
+                </div>
+
+                <div class="new_content">
+                    <button class="create_btn"><a href="/post/create/">글 쓰기</a></button>
+                </div>
+
+                {% block content %}
+                    <div class="community_list">
+                        {% for post in posts %}
+                            <div class="post">
+                                <p class="date">{{ post.created_at|date:"Y.m.d" }}</p>
+                                <p class="title"><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></p>
+                                <p class="username">{{ post.author.username }}</p>
+                                <hr>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById('city').addEventListener('click', function(event) {
+        event.stopPropagation();
+        var locateList = document.getElementById('locate_list');
+        if (locateList.style.display === 'none' || locateList.style.display === '') {
+            locateList.style.display = 'block';
+        } else {
+            locateList.style.display = 'none';
+        }
+    });
+
+    document.addEventListener('click', function(event) {
+        var locateList = document.getElementById('locate_list');
+        var cityButton = document.getElementById('city');
+        if (!locateList.contains(event.target) && event.target !== cityButton) {
+            locateList.style.display = 'none';
+        }
+    });
+</script>
+</html>
